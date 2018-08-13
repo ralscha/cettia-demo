@@ -37,13 +37,7 @@ public class Application {
 
 		server.onsocket(socket -> {
 			socket.on("chat", msg -> {
-
-				server.all(skt -> {
-					if (skt != socket) {
-						skt.send("chat", msg);
-					}
-				});
-
+				server.find(skt -> !socket.id().equals(skt.id())).send("chat", msg);
 			});
 		});
 
