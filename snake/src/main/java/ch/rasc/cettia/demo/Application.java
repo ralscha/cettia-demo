@@ -50,7 +50,9 @@ public class Application {
 						.and(RequestPredicates.headers(headers -> !"websocket"
 								.equalsIgnoreCase(headers.asHttpHeaders().getUpgrade()))),
 						asityHandlerFunction)
-				.and(RouterFunctions.route(RequestPredicates.GET("/").or(RequestPredicates.GET("/index.html")),
+				.and(RouterFunctions.route(
+						RequestPredicates.GET("/")
+								.or(RequestPredicates.GET("/index.html")),
 						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
 								.syncBody(indexHtml)));
 	}

@@ -52,7 +52,7 @@ public class SnakeService {
 			}
 			this.snakes.put(newSnake.getId(), newSnake);
 			SnakeMessage joinMsg = SnakeMessage.createJoinMessage(createJoinData());
-			socket.onopen(v->this.defaultServer.all().send("snake", joinMsg));
+			socket.onopen(v -> this.defaultServer.all().send("snake", joinMsg));
 
 			socket.ondelete(tmp -> removeSnake(newSnake.getId()));
 			socket.<String>on("change", msg -> changeDirection(newSnake.getId(), msg));
