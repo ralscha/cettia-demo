@@ -87,7 +87,7 @@ public class Application {
 				disconnect(server, socket);
 			});
 			
-			socket.on("delete", msg -> {
+			socket.ondelete(msg -> {
 				disconnect(server, socket);
 			});
 
