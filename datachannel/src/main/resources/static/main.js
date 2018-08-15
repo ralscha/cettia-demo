@@ -13,6 +13,15 @@ const network = new vis.Network(container, {nodes, edges}, {});
 const messageInputField = document.getElementById('messageTa');
 const outputDiv = document.getElementById('output');
 
+let clientId = sessionStorage.getItem("clientId");
+if (!clientId) {
+	clientId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	  });
+	sessionStorage.setItem("clientId", clientId);
+}
+
 messageInputField.addEventListener('keypress', event => {
 	if (event.keyCode == 13) {
 		sendP2PMessage(messageInputField.value);
@@ -26,8 +35,6 @@ document.getElementById('sendButton').addEventListener('click', event => {
 });
 
 
-socket.on('connected', connected);
-
 socket.on('peer.connected', peerConnected);
 socket.on('peer.disconnected', peerDisconnected); 
 
@@ -36,46 +43,10 @@ socket.on('answer', answerReceived);
 socket.on('ice', iceReceived);
 
 socket.on('open', () => {
-  socket.send('connect');
+  socket.send('connect', {clientId});
+  nodes.add({id:clientId, label:clientId, color:{background:'#C3E186'}});	
+	document.getElementById('socketSessionIdOutput').innerText = clientId;
 });
-
-let socketId;
-
-function connected(msg) {
-	socketId = msg.id;
-	nodes.add({id:msg.id, label:msg.id, color:{background:'#C3E186'}});	
-	document.getElementById('socketSessionIdOutput').innerText = msg.id;
-}
-
-/*
-connection.onopen = (session, details) => {	
-	wampSession = session;	
-	
-
-	
-	wampSession.subscribe('peer.connected', peerConnected);
-	wampSession.subscribe('peer.disconnected', peerDisconnected); 
-	wampSession.publish('peer.connected', [wampSession.id]);
-	
-	wampSession.subscribe('offer', offerReceived);
-	wampSession.subscribe('answer', answerReceived);
-	wampSession.subscribe('ice', iceReceived);
-	
-	if (oldWampSessionId) {
-		wampSession.publish('peer.disconnected', [oldWampSessionId]);
-		oldWampSessionId = null;
-	}
-};	
-
-connection.onclose = (reason, details) => {
-    if (wampSession.id) {
-    	oldWampSessionId = wampSession.id;
-    	nodes.remove(wampSession.id);    	
-    }
-};
-
-connection.open();
-*/
 
 const configuration = {
   iceServers: [{ urls: 'stun:stun.stunprotocol.org:3478' }] 
@@ -94,10 +65,9 @@ function peerConnected(msg) {
 		
 	rtcPeerConnection.createOffer()
 	  .then(offer => rtcPeerConnection.setLocalDescription(offer))
-	  .then(() => socket.send('offer', {receiver:peerKey, id:socketId, localDescription:rtcPeerConnection.localDescription}))
+	  .then(() => socket.send('offer', {receiver:peerKey, id:clientId, localDescription:rtcPeerConnection.localDescription}))
 	  .catch(reason => console.log(reason));
-	
-	
+
 	peers.set(peerKey, {rtcPeerConnection, dataChannel});
 }
 
@@ -113,7 +83,7 @@ function peerDisconnected(msg) {
 			peer.rtcPeerConnection.close();
 		}
 		
-		peers.delete(arg[0]);
+		peers.delete(peerKey);
 	}
 }
 
@@ -135,7 +105,7 @@ function offerReceived(msg) {
 	rtcPeerConnection.setRemoteDescription(offer)
 	.then(() => rtcPeerConnection.createAnswer())
     .then(answer => rtcPeerConnection.setLocalDescription(answer))
-	.then(() => socket.send('answer', {receiver:peerKey, id:socketId, localDescription:rtcPeerConnection.localDescription}))
+	.then(() => socket.send('answer', {receiver:peerKey, id:clientId, localDescription:rtcPeerConnection.localDescription}))
 	.catch(reason => console.log(reason));	
 
 	peers.set(peerKey, {rtcPeerConnection});
@@ -163,9 +133,11 @@ function handleChannelStatusChange(peerKey, event) {
 	const dataChannel = event.currentTarget;
 	if (dataChannel) {
 		const state = dataChannel.readyState;		
-		if (state === "open") {
+		if (state === "open") {	
+			nodes.remove(peerKey);
+			edges.remove(clientId+'-'+peerKey);					
 			nodes.add({id:peerKey, label:peerKey});
-			edges.add({from:socketId, to:peerKey});
+			edges.add({id:clientId+'-'+peerKey, from:clientId, to:peerKey});
 			
 			for (let key of peers.keys()) {
 			  if (key !== peerKey) {
@@ -188,7 +160,7 @@ function handleChannelStatusChange(peerKey, event) {
 
 function onIceCandidate(peerKey, event) {
     if (event.candidate) { 
-    	socket.send('ice', {receiver:peerKey, id:socketId, candidate:event.candidate})
+    	socket.send('ice', {receiver:peerKey, id:clientId, candidate:event.candidate})
     } 
 }
 
@@ -198,7 +170,6 @@ function onDataChannelMessage(peerKey, event) {
 }
 
 function sendP2PMessage(msg) {
-	
 	outputDiv.innerHTML = `<p>Sent message '<strong>${msg}</strong>' to peers</p>`
 		+ outputDiv.innerHTML;
 	

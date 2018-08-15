@@ -43,10 +43,11 @@ public class Application {
 
 		server.onsocket(socket -> {
 
-			socket.on("connect", msg -> {
-				socket.send("connected", Collections.singletonMap("id", socket.id()));
+			socket.<Map<String, Object>>on("connect", msg -> {
+				String clientId = (String) msg.get("clientId");
+				socket.set("clientId", clientId);
 				server.find(excludeMe(socket)).send("peer.connected",
-						Collections.singletonMap("id", socket.id()));
+						Collections.singletonMap("id", clientId));
 			});
 
 			socket.<Map<String, Object>>on("offer", msg -> {
@@ -64,7 +65,7 @@ public class Application {
 
 			socket.ondelete(msg -> {
 				server.all().send("peer.disconnected",
-						Collections.singletonMap("id", socket.id()));
+						Collections.singletonMap("id", socket.get("clientId")));
 			});
 
 		});
@@ -73,7 +74,7 @@ public class Application {
 	}
 
 	private static ServerSocketPredicate receiver(String id) {
-		return skt -> skt.id().equals(id);
+		return skt -> skt.get("clientId").equals(id);
 	}
 
 	private static ServerSocketPredicate excludeMe(ServerSocket socket) {
