@@ -91,6 +91,15 @@ public class Application {
 			socket.<Map<String, Object>>on("leftRoom", msg -> {
 				String room = (String) msg.get("room");
 				socket.untag(room);
+				
+				String username = socket.get("username");
+				Message message = new Message();
+				message.setMessage(username + " has left the room");
+				message.setSendDate(System.currentTimeMillis());
+				message.setType(MessageType.LEAVE);
+				message.setUser(username);
+				store(room, message);
+				server.byTag(room).send("newMsg", Collections.singleton(message));
 			});
 
 			socket.<Map<String, Object>>on("joinedRoom", msg -> {
@@ -98,6 +107,15 @@ public class Application {
 				socket.tag(room);
 
 				socket.send("existingMessages", getMessages(room));
+				
+				String username = socket.get("username");
+				Message message = new Message();
+				message.setMessage(username + " has joined the room");
+				message.setSendDate(System.currentTimeMillis());
+				message.setType(MessageType.JOIN);
+				message.setUser(username);
+				store(room, message);
+				server.byTag(room).send("newMsg", Collections.singleton(message));				
 			});
 
 			socket.ondelete(msg -> {
