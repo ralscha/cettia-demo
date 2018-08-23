@@ -451,8 +451,6 @@ export class SigninPage implements OnInit {
   }
 
   async enterUsername() {
-    console.log(this.username);
-    console.log(this.language);
     const ok = await this.chatService.signin(this.username, this.language);
     if (ok) {
       sessionStorage.setItem('username', this.username);

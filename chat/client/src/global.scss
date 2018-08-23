@@ -3,6 +3,7 @@
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
 @import "~@ionic/angular/css/colors.css";
+
 @import "~@ionic/angular/css/padding.css";
 @import "~@ionic/angular/css/float-elements.css";
 @import "~@ionic/angular/css/text-alignment.css";
@@ -24,7 +25,11 @@ ion-list {
 }
 
 ion-item {
-  color: white;
+  color: white !important;
 }
 
+/* workaround for firefox */
+app-signin.ion-page-invisible {
+  opacity: 1 !important;
+}
 
