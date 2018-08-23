@@ -41,7 +41,6 @@ public class Application implements WebSocketConfigurer {
 
 	@Bean
 	public HandlerMapping httpMapping() {
-		System.out.println("httpmapping");
 		HttpTransportServer httpTransportServer = new HttpTransportServer()
 				.ontransport(defaultServer());
 
@@ -63,7 +62,6 @@ public class Application implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		System.out.println("websocket");
 		WebSocketTransportServer wsTransportServer = new WebSocketTransportServer()
 				.ontransport(defaultServer());
 		AsityWebSocketHandler asityWebSocketHandler = new AsityWebSocketHandler()
