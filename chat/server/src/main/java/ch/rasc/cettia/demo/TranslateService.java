@@ -73,7 +73,8 @@ public class TranslateService {
 					.sum() < this.appConfig.getLimitTranslationCharacters()) {
 				Translation translation = this.translate.translate(text,
 						TranslateOption.sourceLanguage(sourceLanguage),
-						TranslateOption.targetLanguage(targetLanguage));
+						TranslateOption.targetLanguage(targetLanguage),
+						TranslateOption.format("text"));
 
 				return translation.getTranslatedText();
 			}
