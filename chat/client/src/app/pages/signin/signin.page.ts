@@ -10,7 +10,7 @@ import {ChatService} from '../../services/chat.service';
 export class SigninPage implements OnInit {
 
   username: string;
-  language: string = 'en';
+  language = 'en';
 
   supportedLanguages = [
     {
@@ -66,11 +66,7 @@ export class SigninPage implements OnInit {
       'name': 'Cebuano'
     },
     {
-      'language': 'ny',
-      'name': 'Chichewa'
-    },
-    {
-      'language': 'zh',
+      'language': 'zh-CN',
       'name': 'Chinese (Simplified)'
     },
     {
@@ -108,10 +104,6 @@ export class SigninPage implements OnInit {
     {
       'language': 'et',
       'name': 'Estonian'
-    },
-    {
-      'language': 'tl',
-      'name': 'Filipino'
     },
     {
       'language': 'fi',
@@ -290,6 +282,10 @@ export class SigninPage implements OnInit {
       'name': 'Norwegian'
     },
     {
+      'language': 'ny',
+      'name': 'Nyanja (Chichewa)'
+    },
+    {
       'language': 'ps',
       'name': 'Pashto'
     },
@@ -372,6 +368,10 @@ export class SigninPage implements OnInit {
     {
       'language': 'sv',
       'name': 'Swedish'
+    },
+    {
+      'language': 'tl',
+      'name': 'Tagalog (Filipino)'
     },
     {
       'language': 'tg',
