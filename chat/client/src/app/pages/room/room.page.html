@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Rooms</ion-title>
+    <ion-buttons slot="end">
+      <ion-button icon-only (click)="exit()">
+        <ion-icon size="large" name="exit"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item button *ngFor="let room of chatService.rooms" (click)="joinRoom(room)">
+      <ion-label>
+        {{room}}
+      </ion-label>
+      <ion-icon name="chatboxes" item-end></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab slot="fixed" horizontal="end" vertical="bottom">
+    <ion-fab-button (click)="addRoom()" color="secondary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

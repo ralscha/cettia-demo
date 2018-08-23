@@ -1,0 +1,30 @@
+// http://ionicframework.com/docs/theming/
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/colors.css";
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+
+ion-content {
+  background: -moz-linear-gradient(142deg, rgba(153, 153, 153, 1) 0%, rgba(41, 41, 41, 1) 100%);
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, rgba(41, 41, 41, 1)), color-stop(100%, rgba(153, 153, 153, 1)));
+  background: -webkit-linear-gradient(142deg, rgba(153, 153, 153, 1) 0%, rgba(41, 41, 41, 1) 100%);
+  background: -o-linear-gradient(142deg, rgba(153, 153, 153, 1) 0%, rgba(41, 41, 41, 1) 100%);
+  background: -ms-linear-gradient(142deg, rgba(153, 153, 153, 1) 0%, rgba(41, 41, 41, 1) 100%);
+  background: linear-gradient(308deg, rgba(153, 153, 153, 1) 0%, rgba(41, 41, 41, 1) 100%);
+}
+
+ion-list {
+  background: none;
+}
+
+ion-item {
+  color: white;
+}
+
+
