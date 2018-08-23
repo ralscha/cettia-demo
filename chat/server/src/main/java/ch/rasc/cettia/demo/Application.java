@@ -1,5 +1,6 @@
 package ch.rasc.cettia.demo;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,6 +52,23 @@ public class Application {
 	private final Set<String> users = ConcurrentHashMap.newKeySet();
 
 	@Bean
+	public AppConfig appConfig() {
+		return new AppConfig();
+	}
+
+	@Bean
+	public TranslateService translationService() {
+		try {
+			return new TranslateService(appConfig());
+		}
+		catch (IOException e) {
+			LoggerFactory.getLogger(Application.class).error("create translate service",
+					e);
+		}
+		return null;
+	}
+
+	@Bean
 	public Server defaultServer() {
 		Server server = new DefaultServer();
 
@@ -59,6 +78,7 @@ public class Application {
 				if (!this.users.contains(username)) {
 					this.users.add(username);
 					socket.set("username", username);
+					socket.set("language", msg.get("language"));
 					socket.send("signedin",
 							Collections.singletonMap("rooms", this.rooms));
 				}
@@ -69,15 +89,22 @@ public class Application {
 
 			socket.<Map<String, Object>>on("msg", msg -> {
 				String room = (String) msg.get("room");
+				String msgText = (String) msg.get("message");
 
 				Message message = new Message();
-				message.setMessage((String) msg.get("message"));
+				message.setMessage(msgText);
+				message.setLang((String) socket.get("language"));
 				message.setSendDate(System.currentTimeMillis());
 				message.setType(MessageType.MSG);
 				message.setUser(socket.get("username"));
 				store(room, message);
 
-				server.byTag(room).send("newMsg", Collections.singleton(message));
+				server.byTag(room).execute(skt -> {
+					String targetLang = (String) skt.get("language");
+					skt.send("newMsg",
+							Collections.singleton(message.withMessage(translationService()
+									.translate(msgText, message.getLang(), targetLang))));
+				});
 			});
 
 			socket.<Map<String, Object>>on("newRoom", msg -> {
@@ -91,7 +118,7 @@ public class Application {
 			socket.<Map<String, Object>>on("leftRoom", msg -> {
 				String room = (String) msg.get("room");
 				socket.untag(room);
-				
+
 				String username = socket.get("username");
 				Message message = new Message();
 				message.setMessage(username + " has left the room");
@@ -106,8 +133,9 @@ public class Application {
 				String room = (String) msg.get("room");
 				socket.tag(room);
 
-				socket.send("existingMessages", getMessages(room));
-				
+				String targetLang = (String) socket.get("language");
+				socket.send("existingMessages", getMessages(room, targetLang));
+
 				String username = socket.get("username");
 				Message message = new Message();
 				message.setMessage(username + " has joined the room");
@@ -115,7 +143,7 @@ public class Application {
 				message.setType(MessageType.JOIN);
 				message.setUser(username);
 				store(room, message);
-				server.byTag(room).send("newMsg", Collections.singleton(message));				
+				server.byTag(room).send("newMsg", Collections.singleton(message));
 			});
 
 			socket.ondelete(msg -> {
@@ -137,11 +165,13 @@ public class Application {
 				.put(message, true);
 	}
 
-	private List<Message> getMessages(String room) {
+	private List<Message> getMessages(String room, String targetLang) {
 		Cache<Message, Boolean> cache = this.roomMessages.get(room);
 		if (cache != null) {
 			return cache.asMap().keySet().stream()
 					.sorted(Comparator.comparing(Message::getSendDate))
+					.map(msg -> msg.withMessage(translationService()
+							.translate(msg.getMessage(), msg.getLang(), targetLang)))
 					.collect(Collectors.toList());
 		}
 		return Collections.emptyList();

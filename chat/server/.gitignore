@@ -22,3 +22,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/demos-6ff86309d67f.json

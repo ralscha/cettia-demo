@@ -16,7 +16,7 @@ export class ChatService {
     return this.loggedIn;
   }
 
-  signin(username: string): Promise<boolean> {
+  signin(username: string, language: string): Promise<boolean> {
     return new Promise<boolean>(resolve => {
       this.socket = cettia.open(environment.SERVER_URL);
       this.socket.on('signedin', msg => {
@@ -41,7 +41,7 @@ export class ChatService {
       });
 
       this.socket.on('open', () => {
-        this.socket.send('signin', {username});
+        this.socket.send('signin', {username, language});
       });
 
     });

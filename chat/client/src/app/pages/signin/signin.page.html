@@ -12,7 +12,13 @@
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Enter your Nickname</ion-label>
-        <ion-input type="text" [(ngModel)]="username" name="username" required=""></ion-input>
+        <ion-input type="text" [(ngModel)]="username" name="username" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Select your language</ion-label>
+        <ion-select value="en" ok-text="Okay" cancel-text="Dismiss" [(ngModel)]="language" name="language" required>
+          <ion-select-option *ngFor="let lang of supportedLanguages" [value]="lang.language">{{lang.name}}</ion-select-option>
+        </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>
