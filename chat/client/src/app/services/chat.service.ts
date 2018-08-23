@@ -7,10 +7,10 @@ import cettia from 'cettia-client/cettia-bundler';
 })
 export class ChatService {
 
-  private loggedIn = false;
   rooms: string[] = [];
-  private socket: any = null;
   username: string = null;
+  private loggedIn = false;
+  private socket: any = null;
 
   isLoggedIn() {
     return this.loggedIn;
@@ -31,7 +31,9 @@ export class ChatService {
       });
 
       this.socket.on('roomAdded', msg => {
-        this.rooms.push(msg.room);
+        if (!this.rooms.includes(msg.room)) {
+          this.rooms.push(msg.room);
+        }
       });
 
       this.socket.on('roomsRemoved', rooms => {
