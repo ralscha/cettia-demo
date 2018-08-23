@@ -89,7 +89,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>simple-chat</finalName>
+		<finalName>cettia-chat</finalName>
 
 		<plugins>
 			<plugin>
