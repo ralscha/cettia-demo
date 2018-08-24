@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,8 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 
 import io.cettia.DefaultServer;
 import io.cettia.Server;
+import io.cettia.ServerSocket;
+import io.cettia.asity.action.Action;
 import io.cettia.asity.bridge.spring.webflux5.AsityHandlerFunction;
 import io.cettia.asity.bridge.spring.webflux5.AsityWebSocketHandler;
 import io.cettia.transport.http.HttpTransportServer;
@@ -146,7 +150,18 @@ public class Application {
 				server.byTag(room).send("newMsg", Collections.singleton(message));
 			});
 
+			Queue<Object[]> queue = new ConcurrentLinkedQueue<>();
+			socket.oncache(args -> queue.offer(args));
+			socket.onopen(v -> {
+			  while (socket.state() == ServerSocket.State.OPENED && !queue.isEmpty()) {
+			    Object[] args = queue.poll();
+			    socket.send((String) args[0], args[1], (Action<?>) args[2], (Action<?>) args[3]);
+			  }
+			});
+			
 			socket.ondelete(msg -> {
+				queue.forEach(args -> System.out.println(socket + " missed event - name: " + args[0] + ", data: " + args[1]));
+				
 				String username = socket.get("username");
 				if (username != null) {
 					this.users.remove(username);
