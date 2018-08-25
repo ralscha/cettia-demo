@@ -440,7 +440,7 @@ export class SigninPage implements OnInit {
     const username = sessionStorage.getItem('username');
     const language = sessionStorage.getItem('language');
     if (username !== null) {
-      const ok = await this.chatService.signin(username, language);
+      const ok = await this.chatService.signin(username, language, true);
       if (ok) {
         this.navCtrl.goRoot('room');
       } else {

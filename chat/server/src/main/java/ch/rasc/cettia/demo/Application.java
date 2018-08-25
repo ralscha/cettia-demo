@@ -79,7 +79,9 @@ public class Application {
 		server.onsocket(socket -> {
 			socket.<Map<String, Object>>on("signin", msg -> {
 				String username = (String) msg.get("username");
-				if (!this.users.contains(username)) {
+				boolean refresh = (boolean)msg.get("refresh");
+				
+				if (refresh || !this.users.contains(username)) {
 					this.users.add(username);
 					socket.set("username", username);
 					socket.set("language", msg.get("language"));
