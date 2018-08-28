@@ -2,7 +2,7 @@ Collection of [Cettia](http://cettia.io/) and Spring 5 demo applications.
 
 | Project | Description | Source | Online |
 |---------|-------------|--------|--------|
-| chat | Ionic 4 chat application | | <a href="https://demo.rasc.ch/cettia-chat/">:link:</a> |
+| chat | Ionic 4 chat application with automatic message translation with the [Cloud Translation API](https://cloud.google.com/translate/) from Google | | <a href="https://demo.rasc.ch/cettia-chat/">:link:</a> |
 | datachannel | WebRTC data channel example | | |
 | gauge | Sending random data to the client and displaying the values with the Gauge diagrom from the [echarts](https://ecomfe.github.io/echarts-doc/public/en/index.html) library. |        |  |
 | iss | The server reads periodically the position of the International Space Station from api.open-notify.org and sends the location to all connected clients. |        |  |
