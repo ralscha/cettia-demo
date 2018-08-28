@@ -442,7 +442,7 @@ export class SigninPage implements OnInit {
     if (username !== null) {
       const ok = await this.chatService.signin(username, language, true);
       if (ok) {
-        this.navCtrl.goRoot('room');
+        this.navCtrl.navigateRoot('room');
       } else {
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('language');
@@ -456,7 +456,7 @@ export class SigninPage implements OnInit {
       sessionStorage.setItem('username', this.username);
       sessionStorage.setItem('language', this.language);
       this.username = '';
-      this.navCtrl.goRoot('room');
+      this.navCtrl.navigateRoot('room');
     } else {
       const alert = await this.alertCtrl.create({
         header: 'Error',

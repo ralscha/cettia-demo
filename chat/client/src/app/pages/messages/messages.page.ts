@@ -34,7 +34,7 @@ export class MessagesPage implements OnInit, OnDestroy {
   exit() {
     sessionStorage.removeItem('username');
     this.chatService.signout();
-    this.navCtrl.goRoot('/signin');
+    this.navCtrl.navigateRoot('/signin');
   }
 
   ngOnInit() {

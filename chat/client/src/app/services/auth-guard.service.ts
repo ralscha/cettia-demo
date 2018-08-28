@@ -21,12 +21,12 @@ export class AuthGuard implements CanActivate {
       if (username !== null) {
         return this.chatService.signin(username, language, true).then(ok => {
           if (!ok) {
-            this.navCtrl.goRoot('/signin');
+            this.navCtrl.navigateRoot('/signin');
           }
           return ok;
         });
       } else {
-        this.navCtrl.goRoot('/signin');
+        this.navCtrl.navigateRoot('/signin');
         return false;
       }
     }
