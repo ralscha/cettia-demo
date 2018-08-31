@@ -13,7 +13,7 @@
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Enter Room Name</ion-label>
-        <ion-input type="text" [(ngModel)]="roomname" name="roomname" required></ion-input>
+        <ion-input type="text" [(ngModel)]="roomname" name="roomname" required (keyup.enter)="addRoom()"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>

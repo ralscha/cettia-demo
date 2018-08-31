@@ -9,7 +9,7 @@
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Enter your Nickname</ion-label>
-        <ion-input type="text" [(ngModel)]="username" name="username" required></ion-input>
+        <ion-input type="text" [(ngModel)]="username" name="username" required (keyup.enter)="enterUsername()"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Select your language</ion-label>
