@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 
 @Service
 public class CpuDataService {
@@ -38,7 +39,7 @@ public class CpuDataService {
 				new double[] { this.random.nextDouble(), this.random.nextDouble(),
 						this.random.nextDouble(), this.random.nextDouble() });
 
-		this.defaultServer.all().send("smoothie", data);
+		this.defaultServer.find(ServerSocketPredicates.all()).send("smoothie", data);
 	}
 
 }

@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 
 public class Snake {
 
@@ -60,12 +61,12 @@ public class Snake {
 
 	private synchronized void kill(Server server) {
 		resetState();
-		server.all().send("snake", SnakeMessage.createDeadMessage());
+		server.find(ServerSocketPredicates.all()).send("snake", SnakeMessage.createDeadMessage());
 	}
 
 	private synchronized void reward(Server server) {
 		this.length++;
-		server.all().send("snake", SnakeMessage.createKillMessage());
+		server.find(ServerSocketPredicates.all()).send("snake", SnakeMessage.createKillMessage());
 	}
 
 	public synchronized void update(Collection<Snake> snakes, Server server) {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -51,7 +52,7 @@ public class FetchPositionService {
 	@Scheduled(initialDelay = 1000, fixedDelay = 3000)
 	public void publish() {
 		Map<String, Object> currentLocation = fetchCurrentLocation();
-		this.defaultServer.all().send("location", currentLocation);
+		this.defaultServer.find(ServerSocketPredicates.all()).send("location", currentLocation);
 	}
 
 }

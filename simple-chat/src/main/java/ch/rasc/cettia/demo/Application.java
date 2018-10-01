@@ -22,6 +22,7 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 
 import io.cettia.DefaultServer;
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 import io.cettia.asity.bridge.spring.webflux5.AsityHandlerFunction;
 import io.cettia.asity.bridge.spring.webflux5.AsityWebSocketHandler;
 import io.cettia.transport.http.HttpTransportServer;
@@ -37,7 +38,7 @@ public class Application {
 
 		server.onsocket(socket -> {
 			socket.on("chat", msg -> {
-				server.find(skt -> !socket.id().equals(skt.id())).send("chat", msg);
+				server.find(ServerSocketPredicates.id(socket).negate()).send("chat", msg);
 			});
 		});
 

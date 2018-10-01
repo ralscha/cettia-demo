@@ -24,8 +24,7 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 
 import io.cettia.DefaultServer;
 import io.cettia.Server;
-import io.cettia.ServerSocket;
-import io.cettia.ServerSocketPredicate;
+import io.cettia.ServerSocketPredicates;
 import io.cettia.asity.bridge.spring.webflux5.AsityHandlerFunction;
 import io.cettia.asity.bridge.spring.webflux5.AsityWebSocketHandler;
 import io.cettia.transport.http.HttpTransportServer;
@@ -46,39 +45,34 @@ public class Application {
 			socket.<Map<String, Object>>on("connect", msg -> {
 				String clientId = (String) msg.get("clientId");
 				socket.set("clientId", clientId);
-				server.find(excludeMe(socket)).send("peer.connected",
-						Collections.singletonMap("id", clientId));
+				server.find(ServerSocketPredicates.id(socket).negate())
+						.send("peer.connected", Collections.singletonMap("id", clientId));
 			});
 
 			socket.<Map<String, Object>>on("offer", msg -> {
 				String receiverId = (String) msg.get("receiver");
-				server.find(receiver(receiverId)).send("offer", msg);
+				server.find(ServerSocketPredicates.attr("clientId", receiverId))
+						.send("offer", msg);
 			});
 			socket.<Map<String, Object>>on("answer", msg -> {
 				String receiverId = (String) msg.get("receiver");
-				server.find(receiver(receiverId)).send("answer", msg);
+				server.find(ServerSocketPredicates.attr("clientId", receiverId))
+						.send("answer", msg);
 			});
 			socket.<Map<String, Object>>on("ice", msg -> {
 				String receiverId = (String) msg.get("receiver");
-				server.find(receiver(receiverId)).send("ice", msg);
+				server.find(ServerSocketPredicates.attr("clientId", receiverId))
+						.send("ice", msg);
 			});
 
 			socket.ondelete(msg -> {
-				server.all().send("peer.disconnected",
+				server.find(ServerSocketPredicates.all()).send("peer.disconnected",
 						Collections.singletonMap("id", socket.get("clientId")));
 			});
 
 		});
 
 		return server;
-	}
-
-	private static ServerSocketPredicate receiver(String id) {
-		return skt -> skt.get("clientId").equals(id);
-	}
-
-	private static ServerSocketPredicate excludeMe(ServerSocket socket) {
-		return skt -> !socket.id().equals(skt.id());
 	}
 
 	@Bean

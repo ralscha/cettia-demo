@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 
 @Service
 public class DataEmitterService {
@@ -26,7 +27,7 @@ public class DataEmitterService {
 		for (int i = 0; i < 5; i++) {
 			data.add(this.random.nextInt(31));
 		}
-		this.defaultServer.all().send("data", data);
+		this.defaultServer.find(ServerSocketPredicates.all()).send("data", data);
 	}
 
 }

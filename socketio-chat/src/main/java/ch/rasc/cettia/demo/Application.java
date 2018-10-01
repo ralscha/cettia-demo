@@ -27,7 +27,7 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 import io.cettia.DefaultServer;
 import io.cettia.Server;
 import io.cettia.ServerSocket;
-import io.cettia.ServerSocketPredicate;
+import io.cettia.ServerSocketPredicates;
 import io.cettia.asity.bridge.spring.webflux5.AsityHandlerFunction;
 import io.cettia.asity.bridge.spring.webflux5.AsityWebSocketHandler;
 import io.cettia.transport.http.HttpTransportServer;
@@ -51,18 +51,20 @@ public class Application {
 				Map<String, Object> data = new HashMap<>();
 				data.put("username", socket.get("username"));
 				data.put("message", msg);
-				server.find(excludeMe(socket)).send("new message", data);
+				server.find(ServerSocketPredicates.id(socket).negate())
+						.send("new message", data);
 			});
 
 			// when the client emits 'typing', we broadcast it to others
 			socket.on("typing", msg -> {
-				server.find(excludeMe(socket)).send("typing",
+				server.find(ServerSocketPredicates.id(socket).negate()).send("typing",
 						Collections.singletonMap("username", socket.get("username")));
 			});
 
 			// when the client emits 'stop typing', we broadcast it to others
 			socket.on("stop typing", msg -> {
-				server.find(excludeMe(socket)).send("stop typing",
+				server.find(ServerSocketPredicates.id(socket).negate()).send(
+						"stop typing",
 						Collections.singletonMap("username", socket.get("username")));
 			});
 
@@ -79,14 +81,15 @@ public class Application {
 				Map<String, Object> data = new HashMap<>();
 				data.put("username", socket.get("username"));
 				data.put("numUsers", this.connectedClients.size());
-				server.find(excludeMe(socket)).send("user joined", data);
+				server.find(ServerSocketPredicates.id(socket).negate())
+						.send("user joined", data);
 			});
 
 			// when the user disconnects.. perform this
 			socket.on("disconnect", msg -> {
 				disconnect(server, socket);
 			});
-			
+
 			socket.ondelete(msg -> {
 				disconnect(server, socket);
 			});
@@ -102,12 +105,9 @@ public class Application {
 			Map<String, Object> data = new HashMap<>();
 			data.put("username", socket.get("username"));
 			data.put("numUsers", this.connectedClients.size());
-			server.find(excludeMe(socket)).send("user left", data);
+			server.find(ServerSocketPredicates.id(socket).negate()).send("user left",
+					data);
 		}
-	}
-
-	private static ServerSocketPredicate excludeMe(ServerSocket socket) {
-		return skt -> !socket.id().equals(skt.id());
 	}
 
 	@Bean

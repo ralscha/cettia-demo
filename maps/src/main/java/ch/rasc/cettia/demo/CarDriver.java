@@ -16,6 +16,7 @@ import org.springframework.util.StreamUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 
 @Service
 public class CarDriver {
@@ -60,7 +61,7 @@ public class CarDriver {
 			this.blueRoutePos = 0;
 		}
 
-		this.defaultServer.all().send("map.blue",
+		this.defaultServer.find(ServerSocketPredicates.all()).send("map.blue",
 				this.objectMapper.convertValue(latLng, Map.class));
 	}
 
@@ -72,7 +73,7 @@ public class CarDriver {
 			this.redRoutePos = 0;
 		}
 
-		this.defaultServer.all().send("map.red",
+		this.defaultServer.find(ServerSocketPredicates.all()).send("map.red",
 				this.objectMapper.convertValue(latLng, Map.class));
 	}
 

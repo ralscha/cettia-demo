@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 
 /**
  * Sets up the timer for the multi-player snake game WebSocket example.
@@ -52,7 +53,7 @@ public class SnakeService {
 			}
 			this.snakes.put(newSnake.getId(), newSnake);
 			SnakeMessage joinMsg = SnakeMessage.createJoinMessage(createJoinData());
-			socket.onopen(v -> this.defaultServer.all().send("snake", joinMsg));
+			socket.onopen(v -> this.defaultServer.find(ServerSocketPredicates.all()).send("snake", joinMsg));
 
 			socket.ondelete(tmp -> removeSnake(newSnake.getId()));
 			socket.<String>on("change", msg -> changeDirection(newSnake.getId(), msg));
@@ -69,7 +70,7 @@ public class SnakeService {
 			}
 		}
 
-		this.defaultServer.all().send("snake", SnakeMessage.createLeaveMessage(snakeId));
+		this.defaultServer.find(ServerSocketPredicates.all()).send("snake", SnakeMessage.createLeaveMessage(snakeId));
 
 	}
 
@@ -97,7 +98,7 @@ public class SnakeService {
 		}
 
 		if (!updateData.isEmpty()) {
-			this.defaultServer.all().send("snake",
+			this.defaultServer.find(ServerSocketPredicates.all()).send("snake",
 					SnakeMessage.createUpdateMessage(updateData));
 		}
 	}
