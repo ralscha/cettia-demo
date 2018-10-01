@@ -34,7 +34,7 @@
     "@ionic/ng-toolkit": "1.0.8",
     "@ionic/schematics-angular": "1.0.6",
     "@ionic/v4-migration-tslint": "1.5.1",
-    "@types/node": "10.11.0",
+    "@types/node": "10.11.3",
     "bread-compressor-cli": "1.0.4",
     "codelyzer": "4.4.4",
     "protractor": "5.4.1",
