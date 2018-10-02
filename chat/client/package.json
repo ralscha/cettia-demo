@@ -24,10 +24,10 @@
   },
   "devDependencies": {
     "@angular-devkit/architect": "0.8.3",
-    "@angular-devkit/build-angular": "0.8.3",
+    "@angular-devkit/build-angular": "0.8.4",
     "@angular-devkit/core": "0.8.3",
     "@angular-devkit/schematics": "0.8.3",
-    "@angular/cli": "6.2.3",
+    "@angular/cli": "6.2.4",
     "@angular/compiler": "6.1.9",
     "@angular/compiler-cli": "6.1.9",
     "@angular/language-service": "6.1.9",
