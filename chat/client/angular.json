@@ -2,6 +2,7 @@
   "$schema": "./node_modules/@angular-devkit/core/src/workspace/workspace-schema.json",
   "version": 1,
   "defaultProject": "app",
+  "newProjectRoot": "projects",
   "projects": {
     "app": {
       "root": "",
@@ -87,13 +88,13 @@
     }
   },
   "cli": {
-    "defaultCollection": "@ionic/schematics-angular"
+    "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {
-    "@ionic/schematics-angular:component": {
+    "@ionic/angular-toolkit:component": {
       "styleext": "scss"
     },
-    "@ionic/schematics-angular:page": {
+    "@ionic/angular-toolkit:page": {
       "styleext": "scss"
     }
   }
