@@ -61,12 +61,14 @@ public class Snake {
 
 	private synchronized void kill(Server server) {
 		resetState();
-		server.find(ServerSocketPredicates.all()).send("snake", SnakeMessage.createDeadMessage());
+		server.find(ServerSocketPredicates.all()).send("snake",
+				SnakeMessage.createDeadMessage());
 	}
 
 	private synchronized void reward(Server server) {
 		this.length++;
-		server.find(ServerSocketPredicates.all()).send("snake", SnakeMessage.createKillMessage());
+		server.find(ServerSocketPredicates.all()).send("snake",
+				SnakeMessage.createKillMessage());
 	}
 
 	public synchronized void update(Collection<Snake> snakes, Server server) {

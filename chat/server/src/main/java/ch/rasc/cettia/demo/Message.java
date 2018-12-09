@@ -11,7 +11,7 @@ public class Message {
 	private long sendDate;
 
 	public Message withMessage(String newMessage) {
-		Message messageCopy = new Message();				
+		Message messageCopy = new Message();
 		messageCopy.setMessage(newMessage);
 		messageCopy.setLang(getLang());
 		messageCopy.setSendDate(getSendDate());
@@ -19,7 +19,7 @@ public class Message {
 		messageCopy.setUser(getUser());
 		return messageCopy;
 	}
-	
+
 	public String getLang() {
 		return this.lang;
 	}

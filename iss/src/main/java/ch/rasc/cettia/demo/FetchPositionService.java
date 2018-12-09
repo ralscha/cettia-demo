@@ -52,7 +52,8 @@ public class FetchPositionService {
 	@Scheduled(initialDelay = 1000, fixedDelay = 3000)
 	public void publish() {
 		Map<String, Object> currentLocation = fetchCurrentLocation();
-		this.defaultServer.find(ServerSocketPredicates.all()).send("location", currentLocation);
+		this.defaultServer.find(ServerSocketPredicates.all()).send("location",
+				currentLocation);
 	}
 
 }

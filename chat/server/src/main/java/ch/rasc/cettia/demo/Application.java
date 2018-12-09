@@ -26,6 +26,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -80,9 +81,10 @@ public class Application {
 		server.onsocket(socket -> {
 			socket.<Map<String, Object>>on("signin", msg -> {
 				String username = (String) msg.get("username");
-				Boolean refresh = (Boolean)msg.get("refresh");
-				
-				if ((refresh != null && refresh.booleanValue()) || !this.users.contains(username)) {
+				Boolean refresh = (Boolean) msg.get("refresh");
+
+				if (refresh != null && refresh.booleanValue()
+						|| !this.users.contains(username)) {
 					this.users.add(username);
 					socket.set("username", username);
 					socket.set("language", msg.get("language"));
@@ -133,7 +135,8 @@ public class Application {
 				message.setType(MessageType.LEAVE);
 				message.setUser(username);
 				store(room, message);
-				server.find(ServerSocketPredicates.tag(room)).send("newMsg", Collections.singleton(message));
+				server.find(ServerSocketPredicates.tag(room)).send("newMsg",
+						Collections.singleton(message));
 			});
 
 			socket.<Map<String, Object>>on("joinedRoom", msg -> {
@@ -150,21 +153,24 @@ public class Application {
 				message.setType(MessageType.JOIN);
 				message.setUser(username);
 				store(room, message);
-				server.find(ServerSocketPredicates.tag(room)).send("newMsg", Collections.singleton(message));
+				server.find(ServerSocketPredicates.tag(room)).send("newMsg",
+						Collections.singleton(message));
 			});
-			
+
 			Queue<Object[]> queue = new ConcurrentLinkedQueue<>();
 			socket.oncache(args -> queue.offer(args));
 			socket.onopen(v -> {
-			  while (socket.state() == ServerSocket.State.OPENED && !queue.isEmpty()) {
-			    Object[] args = queue.poll();
-			    socket.send((String) args[0], args[1], (Action<?>) args[2], (Action<?>) args[3]);
-			  }
+				while (socket.state() == ServerSocket.State.OPENED && !queue.isEmpty()) {
+					Object[] args = queue.poll();
+					socket.send((String) args[0], args[1], (Action<?>) args[2],
+							(Action<?>) args[3]);
+				}
 			});
-			
+
 			socket.ondelete(msg -> {
-				queue.forEach(args -> System.out.println(socket + " missed event - name: " + args[0] + ", data: " + args[1]));
-				
+				queue.forEach(args -> System.out.println(socket + " missed event - name: "
+						+ args[0] + ", data: " + args[1]));
+
 				String username = socket.get("username");
 				if (username != null) {
 					this.users.remove(username);
@@ -209,7 +215,8 @@ public class Application {
 			oldRooms.forEach(this.roomMessages::remove);
 			oldRooms.forEach(this.rooms::remove);
 
-			defaultServer().find(ServerSocketPredicates.all()).send("roomsRemoved", oldRooms);
+			defaultServer().find(ServerSocketPredicates.all()).send("roomsRemoved",
+					oldRooms);
 		}
 	}
 
@@ -221,10 +228,12 @@ public class Application {
 		AsityHandlerFunction asityHandlerFunction = new AsityHandlerFunction()
 				.onhttp(httpTransportServer);
 
+		RequestPredicate isNotWebSocket = RequestPredicates
+				.headers(headers -> !"websocket"
+						.equalsIgnoreCase(headers.asHttpHeaders().getUpgrade()));
+
 		return RouterFunctions
-				.route(RequestPredicates.path("/cettia")
-						.and(RequestPredicates.headers(headers -> !"websocket"
-								.equalsIgnoreCase(headers.asHttpHeaders().getUpgrade()))),
+				.route(RequestPredicates.path("/cettia").and(isNotWebSocket),
 						asityHandlerFunction)
 				.and(RouterFunctions.route(RequestPredicates.GET("/"),
 						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)

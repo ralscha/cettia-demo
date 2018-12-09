@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -22,6 +23,7 @@ import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAd
 
 import io.cettia.DefaultServer;
 import io.cettia.Server;
+import io.cettia.ServerSocketPredicates;
 import io.cettia.asity.bridge.spring.webflux5.AsityHandlerFunction;
 import io.cettia.asity.bridge.spring.webflux5.AsityWebSocketHandler;
 import io.cettia.transport.http.HttpTransportServer;
@@ -37,13 +39,8 @@ public class Application {
 
 		server.onsocket(socket -> {
 			socket.on("drawing", msg -> {
-
-				server.all(skt -> {
-					if (skt != socket) {
-						skt.send("drawing", msg);
-					}
-				});
-
+				server.find(ServerSocketPredicates.id(socket).negate()).send("drawing",
+						msg);
 			});
 		});
 
@@ -58,10 +55,12 @@ public class Application {
 		AsityHandlerFunction asityHandlerFunction = new AsityHandlerFunction()
 				.onhttp(httpTransportServer);
 
+		RequestPredicate isNotWebSocket = RequestPredicates
+				.headers(headers -> !"websocket"
+						.equalsIgnoreCase(headers.asHttpHeaders().getUpgrade()));
+
 		return RouterFunctions
-				.route(RequestPredicates.path("/cettia")
-						.and(RequestPredicates.headers(headers -> !"websocket"
-								.equalsIgnoreCase(headers.asHttpHeaders().getUpgrade()))),
+				.route(RequestPredicates.path("/cettia").and(isNotWebSocket),
 						asityHandlerFunction)
 				.and(RouterFunctions.route(RequestPredicates.GET("/"),
 						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)

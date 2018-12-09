@@ -16,6 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
@@ -118,10 +119,12 @@ public class Application {
 		AsityHandlerFunction asityHandlerFunction = new AsityHandlerFunction()
 				.onhttp(httpTransportServer);
 
+		RequestPredicate isNotWebSocket = RequestPredicates
+				.headers(headers -> !"websocket"
+						.equalsIgnoreCase(headers.asHttpHeaders().getUpgrade()));
+
 		return RouterFunctions
-				.route(RequestPredicates.path("/cettia")
-						.and(RequestPredicates.headers(headers -> !"websocket"
-								.equalsIgnoreCase(headers.asHttpHeaders().getUpgrade()))),
+				.route(RequestPredicates.path("/cettia").and(isNotWebSocket),
 						asityHandlerFunction)
 				.and(RouterFunctions.route(RequestPredicates.GET("/"),
 						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
