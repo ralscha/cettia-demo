@@ -14,22 +14,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "progress": false,
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
+			  "src/manifest.json",
               {
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
-              },
-              {
-                "glob": "**/*.svg",
-                "input": "node_modules/@ionic/angular/dist/ionic/svg",
-                "output": "./svg"
               }
             ],
             "styles": [
@@ -58,7 +53,17 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "ci": {
+              "progress": false
             }
           }
         },
@@ -70,6 +75,9 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "ci": {
+              "progress": false
             }
           }
         },
