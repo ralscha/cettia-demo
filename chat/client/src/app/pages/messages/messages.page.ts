@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Content, List, NavController} from '@ionic/angular';
+import {IonContent, IonList, NavController} from '@ionic/angular';
 import {ChatService} from '../../services/chat.service';
 import {Message} from '../../models/message';
 import {ActivatedRoute} from '@angular/router';
@@ -11,7 +11,7 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class MessagesPage implements OnInit, OnDestroy {
 
-  @ViewChild(Content) content: Content;
+  @ViewChild(IonContent) content: IonContent;
 
   message: string;
   messages: Message[] = [];
@@ -20,7 +20,7 @@ export class MessagesPage implements OnInit, OnDestroy {
 
   @ViewChild('messageInput') messageInput: ElementRef;
 
-  @ViewChild(List, {read: ElementRef})
+  @ViewChild(IonList, {read: ElementRef})
   private chatElement: ElementRef;
   private mutationObserver: MutationObserver;
 
