@@ -14,7 +14,7 @@ export class RoomPage {
   }
 
   addRoom() {
-    this.navCtrl.navigateForward('/add-room', {skipLocationChange: true});
+    this.navCtrl.navigateForward('/add-room');
   }
 
   joinRoom(room: string) {

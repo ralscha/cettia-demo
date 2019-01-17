@@ -20,11 +20,16 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-			  "src/manifest.json",
+              "src/manifest.json",
               {
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "@(md-add.svg|md-chatboxes.svg|md-arrow-back.svg|md-exit.svg|md-close.svg|md-happy.svg|md-send.svg|ios-add.svg|ios-chatboxes.svg|ios-arrow-back.svg|ios-exit.svg|ios-close.svg|ios-happy.svg|ios-send.svg)",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
               }
             ],
             "styles": [

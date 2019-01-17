@@ -17,7 +17,7 @@ export class AddRoomPage {
 
   async addRoom() {
     this.chatService.addRoom(this.roomname);
-    this.navCtrl.navigateBack('room');
+    await this.navCtrl.navigateBack('/room');
   }
 
 }
