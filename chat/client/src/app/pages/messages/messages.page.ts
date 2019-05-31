@@ -6,21 +6,21 @@ import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-messages',
-  templateUrl: 'messages.page.html',
-  styleUrls: ['messages.page.scss'],
+  templateUrl: './messages.page.html',
+  styleUrls: ['./messages.page.scss'],
 })
 export class MessagesPage implements OnInit, OnDestroy {
 
-  @ViewChild(IonContent) content: IonContent;
+  @ViewChild(IonContent, { static: true }) content: IonContent;
 
   message: string;
   messages: Message[] = [];
   roomName: string;
   showEmojiPicker = false;
 
-  @ViewChild('messageInput') messageInput: ElementRef;
+  @ViewChild('messageInput', { static: true }) messageInput: ElementRef;
 
-  @ViewChild(IonList, {read: ElementRef})
+  @ViewChild(IonList, { read: ElementRef, static: true })
   private chatElement: ElementRef;
   private mutationObserver: MutationObserver;
 
