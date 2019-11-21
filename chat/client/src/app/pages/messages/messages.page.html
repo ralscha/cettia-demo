@@ -18,7 +18,7 @@
   <ion-list>
     <ion-item *ngFor="let msg of messages">
       <ion-label>
-        <div class="status" text-center *ngIf="msg.type==='JOIN'||msg.type==='LEAVE';else message">
+        <div class="status ion-text-center" *ngIf="msg.type==='JOIN'||msg.type==='LEAVE';else message">
           <span class="date">{{msg.sendDate | relativeTime}}</span>
           <span class="content-center">{{msg.message}}</span>
         </div>
