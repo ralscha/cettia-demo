@@ -1,10 +1,8 @@
 package ch.rasc.cettia.demo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "app")
-@Component
 public class AppConfig {
 	private String credentialsPath;
 

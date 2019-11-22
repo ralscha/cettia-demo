@@ -13,8 +13,15 @@
 
 :root {
   --ion-background-color: #222428;
+	--ion-color-step-850: white;	
 }
 
 ion-item {
   --ion-text-color: white;
 }
+
+.alert-title {
+  --ion-text-color: white;
+}
+
+
