@@ -160,9 +160,8 @@ ion-footer {
   display: flex;
   textarea {
     flex: 1;
-    border: 0;
-    border-bottom: 1px $userBackgroundColor;
-    border-style: solid;
+    border: 0 solid;
+    border-bottom-width: 1px;
   }
 }
 

@@ -43,7 +43,7 @@ export class MessagesPage implements OnInit, OnDestroy {
     this.handleNewMessageFunction = this.handleNewMessage.bind(this);
     this.chatService.joinRoom(this.roomName, this.handleNewMessageFunction);
 
-    this.mutationObserver = new MutationObserver(mutations => {
+    this.mutationObserver = new MutationObserver(_ => {
       setTimeout(() => {
         this.content.scrollToBottom();
       }, 100);

@@ -7,8 +7,8 @@
       {{roomName}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button icon-only (click)="exit()">
-        <ion-icon size="large" name="exit"></ion-icon>
+      <ion-button (click)="exit()">
+        <ion-icon size="large" name="exit-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -49,13 +49,13 @@
 
 <ion-footer [style.height]="showEmojiPicker ? '255px' : '55px'">
   <div class="input-wrap">
-    <ion-button fill="clear" icon-only item-right (click)="toggleEmojiPicker()">
-      <ion-icon name="happy"></ion-icon>
+    <ion-button fill="clear" class="ion-item-right" (click)="toggleEmojiPicker()">
+      <ion-icon name="happy-sharp" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-textarea #messageInput type="text" placeholder="Type a message" [(ngModel)]="message" name="message"
                   (keyup.enter)="sendMessage()" (focusin)="onFocus()"></ion-textarea>
-    <ion-button fill="clear" icon-only item-right (click)="sendMessage()">
-      <ion-icon name="send"></ion-icon>
+    <ion-button fill="clear" class="ion-item-right" (click)="sendMessage()">
+      <ion-icon name="send-sharp" slot="icon-only"></ion-icon>
     </ion-button>
   </div>
   <emoji-picker [(ngModel)]="message"></emoji-picker>
