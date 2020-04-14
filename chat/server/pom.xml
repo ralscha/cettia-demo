@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-translate</artifactId>
-			<version>1.94.4</version>
+			<version>1.94.5</version>
 			<exclusions>
 				<exclusion>
 					<groupId>joda-time</groupId>

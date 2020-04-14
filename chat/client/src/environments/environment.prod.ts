@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  SERVER_URL: 'https://demo.rasc.ch/cettia-chat-backend'
+  SERVER_URL: 'http://localhost:8080/cettia'
 };
