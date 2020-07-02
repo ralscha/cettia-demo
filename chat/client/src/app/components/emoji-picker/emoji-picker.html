@@ -1,5 +1,5 @@
 <div class="emoji-picker">
-  <ion-slides pager>
+  <ion-slides [pager]="true">
     <ion-slide *ngFor="let items of emojiArr">
       <div class="emoji-items">
         <span class="emoji-item" (click)="setValue(item)" *ngFor="let item of items">

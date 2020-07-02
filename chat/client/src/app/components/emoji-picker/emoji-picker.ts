@@ -8,7 +8,7 @@ export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'emoji-picker',
+  selector: 'app-emoji-picker',
   providers: [EMOJI_PICKER_VALUE_ACCESSOR],
   templateUrl: './emoji-picker.html',
   styleUrls: ['./emoji-picker.scss'],
@@ -18,8 +18,8 @@ export class EmojiPickerComponent implements ControlValueAccessor {
   emojiArr = [];
 
   private content: string;
-  private onChanged: Function;
-  private onTouched: Function;
+  private onChanged: (fn: any) => void;
+  private onTouched: (fn: any) => void;
 
   constructor() {
     this.emojiArr = this.getEmojis();
