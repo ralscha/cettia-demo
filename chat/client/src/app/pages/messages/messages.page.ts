@@ -11,63 +11,66 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class MessagesPage implements OnInit, OnDestroy {
 
-  @ViewChild(IonContent, { static: true }) content: IonContent;
+  @ViewChild(IonContent, {static: true}) content!: IonContent;
 
-  message: string;
+  message = '';
   messages: Message[] = [];
-  roomName: string;
+  roomName!: string | null;
   showEmojiPicker = false;
 
-  @ViewChild('messageInput', { static: true }) messageInput: ElementRef;
+  @ViewChild('messageInput', {static: true}) messageInput!: ElementRef;
 
-  @ViewChild(IonList, { read: ElementRef, static: true })
-  private chatElement: ElementRef;
-  private mutationObserver: MutationObserver;
+  @ViewChild(IonList, {read: ElementRef, static: true})
+  private chatElement!: ElementRef;
+  private mutationObserver!: MutationObserver;
 
-  private handleNewMessageFunction: any = null;
+  private handleNewMessageFunction: ((msg: Message[]) => void) | null = null;
 
   constructor(private readonly route: ActivatedRoute,
               private readonly navCtrl: NavController,
               readonly chatService: ChatService) {
   }
 
-  exit() {
+  exit(): void {
     sessionStorage.removeItem('username');
     this.chatService.signout();
     this.navCtrl.navigateRoot('/signin');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.roomName = this.route.snapshot.paramMap.get('room');
+    if (this.roomName) {
+      this.handleNewMessageFunction = this.handleNewMessage.bind(this);
+      this.chatService.joinRoom(this.roomName, this.handleNewMessageFunction);
 
-    this.handleNewMessageFunction = this.handleNewMessage.bind(this);
-    this.chatService.joinRoom(this.roomName, this.handleNewMessageFunction);
+      this.mutationObserver = new MutationObserver(_ => {
+        setTimeout(() => {
+          this.content.scrollToBottom();
+        }, 100);
+      });
 
-    this.mutationObserver = new MutationObserver(_ => {
-      setTimeout(() => {
-        this.content.scrollToBottom();
-      }, 100);
-    });
-
-    this.mutationObserver.observe(this.chatElement.nativeElement, {
-      childList: true
-    });
+      this.mutationObserver.observe(this.chatElement.nativeElement, {
+        childList: true
+      });
+    }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.mutationObserver.disconnect();
-    this.chatService.leaveRoom(this.roomName, this.handleNewMessageFunction);
+    if (this.roomName && this.handleNewMessageFunction) {
+      this.chatService.leaveRoom(this.roomName, this.handleNewMessageFunction);
+    }
   }
 
-  handleNewMessage(msg) {
+  handleNewMessage(msg: Message[]): void {
     this.messages.push(...msg);
     if (this.messages.length > 100) {
       this.messages.shift();
     }
   }
 
-  sendMessage() {
-    if (this.message && this.message.trim()) {
+  sendMessage(): void {
+    if (this.message && this.message.trim() && this.roomName) {
       this.chatService.send(this.roomName, this.message);
       this.message = '';
 
@@ -75,12 +78,12 @@ export class MessagesPage implements OnInit, OnDestroy {
     }
   }
 
-  onFocus() {
+  onFocus(): void {
     this.showEmojiPicker = false;
     this.scrollToBottom();
   }
 
-  toggleEmojiPicker() {
+  toggleEmojiPicker(): void {
     this.showEmojiPicker = !this.showEmojiPicker;
     if (!this.showEmojiPicker) {
       this.focus();
@@ -89,13 +92,13 @@ export class MessagesPage implements OnInit, OnDestroy {
     this.scrollToBottom();
   }
 
-  scrollToBottom() {
+  scrollToBottom(): void {
     setTimeout(() => {
       this.content.scrollToBottom();
     }, 10);
   }
 
-  private focus() {
+  private focus(): void {
     if (this.messageInput && this.messageInput.nativeElement) {
       this.messageInput.nativeElement.focus();
     }

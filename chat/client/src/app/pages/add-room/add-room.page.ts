@@ -9,13 +9,13 @@ import {ChatService} from '../../services/chat.service';
 })
 export class AddRoomPage {
 
-  roomname: string;
+  roomname = '';
 
   constructor(private readonly navCtrl: NavController,
               private readonly chatService: ChatService) {
   }
 
-  async addRoom() {
+  async addRoom(): Promise<void> {
     this.chatService.addRoom(this.roomname);
     await this.navCtrl.navigateBack('/room');
   }

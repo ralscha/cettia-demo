@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
+// @ts-ignore
 import cettia from 'cettia-client/cettia-bundler';
 
 @Injectable({
@@ -8,15 +9,16 @@ import cettia from 'cettia-client/cettia-bundler';
 export class ChatService {
 
   rooms: string[] = [];
-  username: string = null;
+  username: string | null = null;
   private loggedIn = false;
-  private socket: any = null;
+  // tslint:disable-next-line:no-any
+  private socket: any | null = null;
 
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return this.loggedIn;
   }
 
-  signin(username: string, language: string, refresh = false): Promise<boolean> {
+  signin(username: string, language: string | null, refresh = false): Promise<boolean> {
     return new Promise<boolean>(resolve => {
 
       if (this.socket) {
@@ -25,7 +27,8 @@ export class ChatService {
       }
 
       this.socket = cettia.open(environment.SERVER_URL);
-      this.socket.on('signedin', msg => {
+      // tslint:disable-next-line:no-any
+      this.socket.on('signedin', (msg: any) => {
         this.loggedIn = true;
         this.username = username;
         this.rooms = msg.rooms;
@@ -36,13 +39,14 @@ export class ChatService {
         resolve(false);
       });
 
-      this.socket.on('roomAdded', msg => {
+      // tslint:disable-next-line:no-any
+      this.socket.on('roomAdded', (msg: any) => {
         if (!this.rooms.includes(msg.room)) {
           this.rooms.push(msg.room);
         }
       });
 
-      this.socket.on('roomsRemoved', rooms => {
+      this.socket.on('roomsRemoved', (rooms: string[]) => {
         this.rooms = this.rooms.filter(r => !rooms.includes(r));
       });
 
@@ -53,28 +57,30 @@ export class ChatService {
     });
   }
 
-  signout() {
+  signout(): void {
     this.loggedIn = false;
     this.username = null;
     this.socket.close();
     this.socket = null;
   }
 
-  addRoom(room: string) {
+  addRoom(room: string): void {
     this.socket.send('newRoom', {room});
   }
 
-  send(room: string, message: string) {
+  send(room: string, message: string): void {
     this.socket.send('msg', {room, message});
   }
 
-  joinRoom(room: string, roomListener: (msg: any) => void) {
+  // tslint:disable-next-line:no-any
+  joinRoom(room: string, roomListener: (msg: any) => void): void {
     this.socket.send('joinedRoom', {room});
     this.socket.once('existingMessages', roomListener);
     this.socket.on('newMsg', roomListener);
   }
 
-  leaveRoom(room: string, roomListener: (msg: any) => void) {
+  // tslint:disable-next-line:no-any
+  leaveRoom(room: string, roomListener: (msg: any) => void): void {
     if (this.socket) {
       this.socket.send('leftRoom', {room});
       this.socket.off('newMsg', roomListener);

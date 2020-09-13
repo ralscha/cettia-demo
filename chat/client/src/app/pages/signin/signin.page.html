@@ -9,17 +9,19 @@
     <ion-list>
       <ion-item>
         <ion-label position="stacked">Enter your Nickname</ion-label>
-        <ion-input type="text" [(ngModel)]="username" name="username" [required]="true" (keyup.enter)="enterUsername()"></ion-input>
+        <ion-input (keyup.enter)="enterUsername()" [(ngModel)]="username" [required]="true" name="username"
+                   type="text"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Select your language</ion-label>
-        <ion-select value="en" ok-text="Okay" cancel-text="Dismiss" [(ngModel)]="language" name="language" required>
-          <ion-select-option *ngFor="let lang of supportedLanguages" [value]="lang.language">{{lang.name}}</ion-select-option>
+        <ion-select [(ngModel)]="language" cancel-text="Dismiss" name="language" ok-text="Okay" required value="en">
+          <ion-select-option *ngFor="let lang of supportedLanguages"
+                             [value]="lang.language">{{lang.name}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>
-          <ion-button size="default" color="secondary" expand="block" type="submit">Enter</ion-button>
+          <ion-button color="secondary" expand="block" size="default" type="submit">Enter</ion-button>
         </ion-label>
       </ion-item>
     </ion-list>

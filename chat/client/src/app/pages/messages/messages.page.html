@@ -8,7 +8,7 @@
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="exit()">
-        <ion-icon size="large" name="exit-outline" slot="icon-only"></ion-icon>
+        <ion-icon name="exit-outline" size="large" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -18,7 +18,7 @@
   <ion-list>
     <ion-item *ngFor="let msg of messages">
       <ion-label>
-        <div class="status ion-text-center" *ngIf="msg.type==='JOIN'||msg.type==='LEAVE';else message">
+        <div *ngIf="msg.type==='JOIN'||msg.type==='LEAVE';else message" class="status ion-text-center">
           <span class="date">{{msg.sendDate | relativeTime}}</span>
           <span class="content-center">{{msg.message}}</span>
         </div>
@@ -26,9 +26,9 @@
       <ng-template #message>
         <div class="message-wrap">
           <div
-            class="message"
             [class.left]="msg.user !== chatService.username"
-            [class.right]="msg.user === chatService.username">
+            [class.right]="msg.user === chatService.username"
+            class="message">
             <img class="user-img" src="assets/guy1.png">
             <div class="msg-detail">
               <div class="msg-info">
@@ -49,12 +49,12 @@
 
 <ion-footer [style.height]="showEmojiPicker ? '255px' : '55px'">
   <div class="input-wrap">
-    <ion-button fill="clear" class="ion-item-right" (click)="toggleEmojiPicker()">
+    <ion-button (click)="toggleEmojiPicker()" class="ion-item-right" fill="clear">
       <ion-icon name="happy-sharp" slot="icon-only"></ion-icon>
     </ion-button>
-    <ion-textarea #messageInput type="text" placeholder="Type a message" [(ngModel)]="message" name="message"
-                  (keyup.enter)="sendMessage()" (focusin)="onFocus()"></ion-textarea>
-    <ion-button fill="clear" class="ion-item-right" (click)="sendMessage()">
+    <ion-textarea #messageInput (focusin)="onFocus()" (keyup.enter)="sendMessage()" [(ngModel)]="message" name="message"
+                  placeholder="Type a message" type="text"></ion-textarea>
+    <ion-button (click)="sendMessage()" class="ion-item-right" fill="clear">
       <ion-icon name="send-sharp" slot="icon-only"></ion-icon>
     </ion-button>
   </div>

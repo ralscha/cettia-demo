@@ -9,7 +9,7 @@ import {ChatService} from '../../services/chat.service';
 })
 export class SigninPage implements OnInit {
 
-  username: string;
+  username = '';
   language = 'en';
 
   supportedLanguages = [
@@ -436,7 +436,7 @@ export class SigninPage implements OnInit {
               private readonly alertCtrl: AlertController) {
   }
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     const username = sessionStorage.getItem('username');
     const language = sessionStorage.getItem('language');
     if (username !== null) {
@@ -445,12 +445,14 @@ export class SigninPage implements OnInit {
         this.navCtrl.navigateRoot('room');
       } else {
         sessionStorage.removeItem('username');
-        sessionStorage.removeItem(language);
+        if (language) {
+          sessionStorage.removeItem(language);
+        }
       }
     }
   }
 
-  async enterUsername() {
+  async enterUsername(): Promise<void> {
     const ok = await this.chatService.signin(this.username, this.language);
     if (ok) {
       sessionStorage.setItem('username', this.username);

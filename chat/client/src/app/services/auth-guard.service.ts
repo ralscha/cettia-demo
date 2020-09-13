@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     if (!this.chatService.isLoggedIn()) {
       const username = sessionStorage.getItem('username');
       const language = sessionStorage.getItem('language');
-      if (username !== null) {
+      if (username) {
         return this.chatService.signin(username, language, true).then(ok => {
           if (!ok) {
             this.navCtrl.navigateRoot('/signin');
