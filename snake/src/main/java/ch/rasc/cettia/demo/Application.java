@@ -57,7 +57,7 @@ public class Application {
 						RequestPredicates.GET("/")
 								.or(RequestPredicates.GET("/index.html")),
 						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
-								.syncBody(indexHtml)));
+								.bodyValue(indexHtml)));
 	}
 
 	@Bean
