@@ -11,7 +11,7 @@ export class ChatService {
   rooms: string[] = [];
   username: string | null = null;
   private loggedIn = false;
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private socket: any | null = null;
 
   isLoggedIn(): boolean {
@@ -27,7 +27,7 @@ export class ChatService {
       }
 
       this.socket = cettia.open(environment.SERVER_URL);
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.socket.on('signedin', (msg: any) => {
         this.loggedIn = true;
         this.username = username;
@@ -39,7 +39,7 @@ export class ChatService {
         resolve(false);
       });
 
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.socket.on('roomAdded', (msg: any) => {
         if (!this.rooms.includes(msg.room)) {
           this.rooms.push(msg.room);
@@ -72,14 +72,14 @@ export class ChatService {
     this.socket.send('msg', {room, message});
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   joinRoom(room: string, roomListener: (msg: any) => void): void {
     this.socket.send('joinedRoom', {room});
     this.socket.once('existingMessages', roomListener);
     this.socket.on('newMsg', roomListener);
   }
 
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   leaveRoom(room: string, roomListener: (msg: any) => void): void {
     if (this.socket) {
       this.socket.send('leftRoom', {room});
