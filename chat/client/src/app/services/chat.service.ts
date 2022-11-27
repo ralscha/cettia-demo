@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-// @ts-ignore
 import cettia from 'cettia-client/cettia-bundler';
 
 @Injectable({

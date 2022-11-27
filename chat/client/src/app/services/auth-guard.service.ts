@@ -12,7 +12,9 @@ export class AuthGuard implements CanActivate {
   constructor(private readonly chatService: ChatService, private readonly navCtrl: NavController) {
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   canActivate(route: ActivatedRouteSnapshot,
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     if (!this.chatService.isLoggedIn()) {
