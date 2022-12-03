@@ -2,7 +2,7 @@ package ch.rasc.cettia.webmvc;
 
 import java.util.concurrent.Executors;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
