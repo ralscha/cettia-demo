@@ -8,13 +8,14 @@
   <form (ngSubmit)="enterUsername()">
     <ion-list>
       <ion-item>
-        <ion-label position="stacked">Enter your Nickname</ion-label>
-        <ion-input (keyup.enter)="enterUsername()" [(ngModel)]="username" [required]="true" name="username"
+        <ion-input (keyup.enter)="enterUsername()" [(ngModel)]="username" [required]="true" labelPlacement="stacked"
+                   name="username" placeholder="Enter your Nickname"
                    type="text"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">Select your language</ion-label>
-        <ion-select [(ngModel)]="language" cancel-text="Dismiss" name="language" ok-text="Okay" required value="en">
+        <ion-select [(ngModel)]="language" cancel-text="Dismiss"
+                    label="Select your language" labelPlacement="stacked"
+                    name="language" ok-text="Okay" required value="en">
           <ion-select-option *ngFor="let lang of supportedLanguages"
                              [value]="lang.language">{{lang.name}}</ion-select-option>
         </ion-select>

@@ -12,8 +12,8 @@
   <form (ngSubmit)="addRoom()">
     <ion-list>
       <ion-item>
-        <ion-label position="stacked">Enter Room Name</ion-label>
-        <ion-input (keyup.enter)="addRoom()" [(ngModel)]="roomname" [required]="true" name="roomname"
+        <ion-input (keyup.enter)="addRoom()" [(ngModel)]="roomname" [required]="true" label="Room Name"
+                   labelPlacement="stacked" name="roomname"
                    type="text"></ion-input>
       </ion-item>
       <ion-item>

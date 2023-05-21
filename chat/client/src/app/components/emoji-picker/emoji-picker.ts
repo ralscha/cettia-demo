@@ -1,5 +1,6 @@
 import {Component, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {IonicSlides} from "@ionic/angular";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,7 +15,7 @@ export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
   styleUrls: ['./emoji-picker.scss'],
 })
 export class EmojiPickerComponent implements ControlValueAccessor {
-
+  swiperModules = [IonicSlides];
   emojiArr: string[][] = [];
 
   private content: string | null = null;

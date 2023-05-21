@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy} from '@angular/router';
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
@@ -14,6 +14,7 @@ import {RoomPage} from './pages/room/room.page';
 import {SigninPage} from './pages/signin/signin.page';
 
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [AppComponent, RelativeTimePipe, EmojiPickerComponent, AddRoomPage, MessagesPage, RoomPage, SigninPage],
   imports: [BrowserModule, CommonModule,
     FormsModule, IonicModule.forRoot(), AppRoutingModule],
