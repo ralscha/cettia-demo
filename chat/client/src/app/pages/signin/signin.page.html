@@ -9,15 +9,17 @@
     <ion-list>
       <ion-item>
         <ion-input (keyup.enter)="enterUsername()" [(ngModel)]="username" [required]="true" labelPlacement="stacked"
-                   name="username" placeholder="Enter your Nickname"
-                   type="text"></ion-input>
+          name="username" placeholder="Enter your Nickname"
+        type="text"></ion-input>
       </ion-item>
       <ion-item>
         <ion-select [(ngModel)]="language" cancel-text="Dismiss"
-                    label="Select your language" labelPlacement="stacked"
-                    name="language" ok-text="Okay" required value="en">
-          <ion-select-option *ngFor="let lang of supportedLanguages"
-                             [value]="lang.language">{{lang.name}}</ion-select-option>
+          label="Select your language" labelPlacement="stacked"
+          name="language" ok-text="Okay" required value="en">
+          @for (lang of supportedLanguages; track $index) {
+            <ion-select-option
+            [value]="lang.language">{{lang.name}}</ion-select-option>
+          }
         </ion-select>
       </ion-item>
       <ion-item>

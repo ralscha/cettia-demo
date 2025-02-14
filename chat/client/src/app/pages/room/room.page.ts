@@ -3,9 +3,10 @@ import {NavController} from '@ionic/angular';
 import {ChatService} from '../../services/chat.service';
 
 @Component({
-  selector: 'app-room',
-  templateUrl: './room.page.html',
-  styleUrls: ['./room.page.scss'],
+    selector: 'app-room',
+    templateUrl: './room.page.html',
+    styleUrls: ['./room.page.scss'],
+    standalone: false
 })
 export class RoomPage {
 

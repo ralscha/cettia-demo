@@ -16,34 +16,57 @@
 
 <ion-content class="ion-no-border">
   <ion-list>
-    <ion-item *ngFor="let msg of messages">
-      <ion-label>
-        <div *ngIf="msg.type==='JOIN'||msg.type==='LEAVE';else message" class="status ion-text-center">
-          <span class="date">{{msg.sendDate | relativeTime}}</span>
-          <span class="content-center">{{msg.message}}</span>
-        </div>
-      </ion-label>
-      <ng-template #message>
-        <div class="message-wrap">
-          <div
-            [class.left]="msg.user !== chatService.username"
-            [class.right]="msg.user === chatService.username"
-            class="message">
-            <img class="user-img" src="assets/guy1.png">
-            <div class="msg-detail">
-              <div class="msg-info">
-                <p>
-                  {{msg.user}}&nbsp;&nbsp;&nbsp;{{msg.sendDate | relativeTime}}</p>
+    @for (msg of messages; track $index) {
+      <ion-item>
+        <ion-label>
+          @if (msg.type==='JOIN'||msg.type==='LEAVE') {
+            <div class="status ion-text-center">
+              <span class="date">{{msg.sendDate | relativeTime}}</span>
+              <span class="content-center">{{msg.message}}</span>
+            </div>
+          } @else {
+            <div class="message-wrap">
+              <div
+                [class.left]="msg.user !== chatService.username"
+                [class.right]="msg.user === chatService.username"
+                class="message">
+                <img class="user-img" src="assets/guy1.png">
+                <div class="msg-detail">
+                  <div class="msg-info">
+                    <p>
+                    {{msg.user}}&nbsp;&nbsp;&nbsp;{{msg.sendDate | relativeTime}}</p>
+                  </div>
+                  <div class="msg-content">
+                    <span class="triangle"></span>
+                    <p class="line-breaker">{{msg.message}}</p>
+                  </div>
+                </div>
               </div>
-              <div class="msg-content">
-                <span class="triangle"></span>
-                <p class="line-breaker">{{msg.message}}</p>
+            </div>
+          }
+        </ion-label>
+        <ng-template #message>
+          <div class="message-wrap">
+            <div
+              [class.left]="msg.user !== chatService.username"
+              [class.right]="msg.user === chatService.username"
+              class="message">
+              <img class="user-img" src="assets/guy1.png">
+              <div class="msg-detail">
+                <div class="msg-info">
+                  <p>
+                  {{msg.user}}&nbsp;&nbsp;&nbsp;{{msg.sendDate | relativeTime}}</p>
+                </div>
+                <div class="msg-content">
+                  <span class="triangle"></span>
+                  <p class="line-breaker">{{msg.message}}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </ng-template>
-    </ion-item>
+        </ng-template>
+      </ion-item>
+    }
   </ion-list>
 </ion-content>
 
@@ -53,7 +76,7 @@
       <ion-icon name="happy-sharp" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-textarea #messageInput (focusin)="onFocus()" (keyup.enter)="sendMessage()" [(ngModel)]="message" name="message"
-                  placeholder="Type a message" type="text"></ion-textarea>
+    placeholder="Type a message" type="text"></ion-textarea>
     <ion-button (click)="sendMessage()" class="ion-item-right" fill="clear">
       <ion-icon name="send-sharp" slot="icon-only"></ion-icon>
     </ion-button>

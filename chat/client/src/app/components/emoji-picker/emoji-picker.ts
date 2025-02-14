@@ -9,10 +9,11 @@ export const EMOJI_PICKER_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'app-emoji-picker',
-  providers: [EMOJI_PICKER_VALUE_ACCESSOR],
-  templateUrl: './emoji-picker.html',
-  styleUrls: ['./emoji-picker.scss'],
+    selector: 'app-emoji-picker',
+    providers: [EMOJI_PICKER_VALUE_ACCESSOR],
+    templateUrl: './emoji-picker.html',
+    styleUrls: ['./emoji-picker.scss'],
+    standalone: false
 })
 export class EmojiPickerComponent implements ControlValueAccessor {
   swiperModules = [IonicSlides];

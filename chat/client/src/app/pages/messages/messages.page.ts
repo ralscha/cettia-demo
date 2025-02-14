@@ -5,9 +5,10 @@ import {Message} from '../../models/message';
 import {ActivatedRoute} from '@angular/router';
 
 @Component({
-  selector: 'app-messages',
-  templateUrl: './messages.page.html',
-  styleUrls: ['./messages.page.scss'],
+    selector: 'app-messages',
+    templateUrl: './messages.page.html',
+    styleUrls: ['./messages.page.scss'],
+    standalone: false
 })
 export class MessagesPage implements OnInit, OnDestroy {
 
