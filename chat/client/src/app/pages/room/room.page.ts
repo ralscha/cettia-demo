@@ -1,17 +1,50 @@
-import {Component} from '@angular/core';
-import {NavController} from '@ionic/angular';
+import {Component, inject} from '@angular/core';
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonFab,
+  IonFabButton,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonTitle,
+  IonToolbar,
+  NavController
+} from '@ionic/angular/standalone';
 import {ChatService} from '../../services/chat.service';
+import {addIcons} from "ionicons";
+import {addSharp, chatbubblesSharp, exitOutline} from "ionicons/icons";
 
 @Component({
-    selector: 'app-room',
-    templateUrl: './room.page.html',
-    styleUrls: ['./room.page.scss'],
-    standalone: false
+  selector: 'app-room',
+  templateUrl: './room.page.html',
+  styleUrl: './room.page.scss',
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonFab,
+    IonFabButton
+  ]
 })
 export class RoomPage {
+  readonly chatService = inject(ChatService);
+  private readonly navCtrl = inject(NavController);
 
-  constructor(private readonly navCtrl: NavController,
-              readonly chatService: ChatService) {
+  constructor() {
+    addIcons({exitOutline, chatbubblesSharp, addSharp});
   }
 
   addRoom(): void {

@@ -1,18 +1,31 @@
-import {Component, OnInit} from '@angular/core';
-import {AlertController, NavController} from '@ionic/angular';
+import {Component, inject, OnInit} from '@angular/core';
+import {
+  AlertController,
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar,
+  NavController
+} from '@ionic/angular/standalone';
 import {ChatService} from '../../services/chat.service';
+import {FormsModule} from '@angular/forms';
 
 @Component({
-    selector: 'app-signin',
-    templateUrl: './signin.page.html',
-    styleUrls: ['./signin.page.scss'],
-    standalone: false
+  selector: 'app-signin',
+  templateUrl: './signin.page.html',
+  styleUrl: './signin.page.scss',
+  imports: [FormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput, IonSelect, IonSelectOption, IonLabel, IonButton]
 })
 export class SigninPage implements OnInit {
-
   username = '';
   language = 'en';
-
   supportedLanguages = [
     {
       language: 'af',
@@ -431,11 +444,9 @@ export class SigninPage implements OnInit {
       name: 'Zulu'
     }
   ];
-
-  constructor(private readonly navCtrl: NavController,
-              private readonly chatService: ChatService,
-              private readonly alertCtrl: AlertController) {
-  }
+  private readonly navCtrl = inject(NavController);
+  private readonly chatService = inject(ChatService);
+  private readonly alertCtrl = inject(AlertController);
 
   async ngOnInit(): Promise<void> {
     const username = sessionStorage.getItem('username');

@@ -1,15 +1,15 @@
 import {Observable} from 'rxjs';
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ChatService} from './chat.service';
-import {NavController} from '@ionic/angular';
+import {NavController} from '@ionic/angular/standalone';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard {
+  private readonly chatService = inject(ChatService);
+  private readonly navCtrl = inject(NavController);
 
-  constructor(private readonly chatService: ChatService, private readonly navCtrl: NavController) {
-  }
 
   canActivate(): Observable<boolean> | Promise<boolean> | boolean {
 

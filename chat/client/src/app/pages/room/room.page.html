@@ -18,7 +18,7 @@
     @for (room of chatService.rooms; track $index) {
       <ion-item (click)="joinRoom(room)" [button]="true">
         <ion-label>
-          {{room}}
+          {{ room }}
         </ion-label>
         <ion-icon name="chatbubbles-sharp"></ion-icon>
       </ion-item>
