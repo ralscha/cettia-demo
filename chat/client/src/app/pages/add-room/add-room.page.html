@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="dark">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button />
     </ion-buttons>
     <ion-title>Add Room</ion-title>
   </ion-toolbar>
@@ -14,7 +14,7 @@
       <ion-item>
         <ion-input (keyup.enter)="addRoom()" [(ngModel)]="roomname" [required]="true" label="Room Name"
                    labelPlacement="stacked" name="roomname"
-                   type="text"></ion-input>
+                   type="text" />
       </ion-item>
       <ion-item>
         <ion-label>

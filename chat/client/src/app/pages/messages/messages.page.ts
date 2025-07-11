@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, viewChild} from '@angular/core';
 import {
   IonBackButton,
   IonButton,
@@ -32,16 +32,15 @@ import {exitOutline, happySharp, sendSharp} from "ionicons/icons";
 })
 export class MessagesPage implements OnInit, OnDestroy {
   readonly chatService = inject(ChatService);
-  @ViewChild(IonContent, {static: true}) content!: IonContent;
+  readonly content = viewChild.required(IonContent);
   message = '';
   messages: Message[] = [];
   roomName!: string | null;
   showEmojiPicker = false;
-  @ViewChild('messageInput', {static: true}) messageInput!: ElementRef;
+  readonly messageInput = viewChild.required<ElementRef>('messageInput');
   private readonly route = inject(ActivatedRoute);
   private readonly navCtrl = inject(NavController);
-  @ViewChild(IonList, {read: ElementRef, static: true})
-  private chatElement!: ElementRef;
+  private readonly chatElement = viewChild.required(IonList, { read: ElementRef });
   private mutationObserver!: MutationObserver;
 
   private handleNewMessageFunction: ((msg: Message[]) => void) | null = null;
@@ -63,10 +62,10 @@ export class MessagesPage implements OnInit, OnDestroy {
       this.chatService.joinRoom(this.roomName, this.handleNewMessageFunction);
 
       this.mutationObserver = new MutationObserver(() => {
-        setTimeout(() => this.content.scrollToBottom(), 100);
+        setTimeout(() => this.content().scrollToBottom(), 100);
       });
 
-      this.mutationObserver.observe(this.chatElement.nativeElement, {
+      this.mutationObserver.observe(this.chatElement().nativeElement, {
         childList: true
       });
     }
@@ -111,13 +110,14 @@ export class MessagesPage implements OnInit, OnDestroy {
 
   scrollToBottom(): void {
     setTimeout(() => {
-      this.content.scrollToBottom();
+      this.content().scrollToBottom();
     }, 10);
   }
 
   private focus(): void {
-    if (this.messageInput && this.messageInput.nativeElement) {
-      this.messageInput.nativeElement.focus();
+    const messageInput = this.messageInput();
+    if (messageInput && messageInput.nativeElement) {
+      messageInput.nativeElement.focus();
     }
   }
 
