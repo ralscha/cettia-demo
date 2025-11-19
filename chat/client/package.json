@@ -11,13 +11,13 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "20.3.9",
-    "@angular/compiler": "20.3.9",
-    "@angular/core": "20.3.9",
-    "@angular/forms": "20.3.9",
-    "@angular/platform-browser": "20.3.9",
-    "@angular/router": "20.3.9",
-    "@ionic/angular": "8.7.8",
+    "@angular/common": "20.3.13",
+    "@angular/compiler": "20.3.13",
+    "@angular/core": "20.3.13",
+    "@angular/forms": "20.3.13",
+    "@angular/platform-browser": "20.3.13",
+    "@angular/router": "20.3.13",
+    "@ionic/angular": "8.7.10",
     "cettia-client": "1.1.0",
     "date-fns": "4.1.0",
     "ionicons": "8.0.13",
@@ -27,16 +27,16 @@
     "zone.js": "0.15.1"
   },
   "devDependencies": {
-    "@angular/build": "20.3.8",
-    "@angular/cli": "20.3.8",
-    "@angular/compiler-cli": "20.3.9",
+    "@angular/build": "20.3.11",
+    "@angular/cli": "20.3.11",
+    "@angular/compiler-cli": "20.3.13",
     "@ionic/angular-toolkit": "12.3.0",
-    "angular-eslint": "20.5.0",
+    "angular-eslint": "20.6.0",
     "bread-compressor-cli": "3.1.2",
-    "eslint": "9.39.0",
+    "eslint": "9.39.1",
     "local-web-server": "5.4.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.46.2"
+    "typescript-eslint": "8.47.0"
   },
   "description": "Chat example"
 }
