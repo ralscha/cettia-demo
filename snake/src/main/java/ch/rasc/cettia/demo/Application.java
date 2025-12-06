@@ -56,7 +56,7 @@ public class Application {
 				.and(RouterFunctions.route(
 						RequestPredicates.GET("/")
 								.or(RequestPredicates.GET("/index.html")),
-						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
+						_ -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
 								.bodyValue(indexHtml)));
 	}
 

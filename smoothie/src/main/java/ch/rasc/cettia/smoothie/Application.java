@@ -55,7 +55,7 @@ public class Application {
 				.route(RequestPredicates.path("/cettia").and(isNotWebSocket),
 						asityHandlerFunction)
 				.and(RouterFunctions.route(RequestPredicates.GET("/"),
-						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
+						_ -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
 								.bodyValue(indexHtml)))
 				.and(RouterFunctions.resources("/**", new ClassPathResource("static/")));
 	}

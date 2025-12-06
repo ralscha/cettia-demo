@@ -57,13 +57,13 @@ public class Application {
 			});
 
 			// when the client emits 'typing', we broadcast it to others
-			socket.on("typing", msg -> {
+			socket.on("typing", _ -> {
 				server.find(ServerSocketPredicates.id(socket).negate()).send("typing",
 						Collections.singletonMap("username", socket.get("username")));
 			});
 
 			// when the client emits 'stop typing', we broadcast it to others
-			socket.on("stop typing", msg -> {
+			socket.on("stop typing", _ -> {
 				server.find(ServerSocketPredicates.id(socket).negate()).send(
 						"stop typing",
 						Collections.singletonMap("username", socket.get("username")));
@@ -87,11 +87,11 @@ public class Application {
 			});
 
 			// when the user disconnects.. perform this
-			socket.on("disconnect", msg -> {
+			socket.on("disconnect", _ -> {
 				disconnect(server, socket);
 			});
 
-			socket.ondelete(msg -> {
+			socket.ondelete(_ -> {
 				disconnect(server, socket);
 			});
 
@@ -127,7 +127,7 @@ public class Application {
 				.route(RequestPredicates.path("/cettia").and(isNotWebSocket),
 						asityHandlerFunction)
 				.and(RouterFunctions.route(RequestPredicates.GET("/"),
-						request -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
+						_ -> ServerResponse.ok().contentType(MediaType.TEXT_HTML)
 								.bodyValue(indexHtml)))
 				.and(RouterFunctions.resources("/**", new ClassPathResource("static/")));
 	}

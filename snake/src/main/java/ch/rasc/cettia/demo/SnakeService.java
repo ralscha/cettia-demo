@@ -53,10 +53,10 @@ public class SnakeService {
 			}
 			this.snakes.put(newSnake.getId(), newSnake);
 			SnakeMessage joinMsg = SnakeMessage.createJoinMessage(createJoinData());
-			socket.onopen(v -> this.defaultServer.find(ServerSocketPredicates.all())
+			socket.onopen(_ -> this.defaultServer.find(ServerSocketPredicates.all())
 					.send("snake", joinMsg));
 
-			socket.ondelete(tmp -> removeSnake(newSnake.getId()));
+			socket.ondelete(_ -> removeSnake(newSnake.getId()));
 			socket.<String>on("change", msg -> changeDirection(newSnake.getId(), msg));
 		});
 	}
